@@ -10,3 +10,6 @@ D:\DevSource\Tilko.Sample\Tilko.Sample\obj\Debug\Tilko.Sample.pdb
 D:\DevSource\Tilko.Sample\Tilko.Sample\obj\Debug\Tilko.Sample.frmMain.resources
 D:\DevSource\Tilko.Sample\Tilko.Sample\bin\Debug\Newtonsoft.Json.dll
 D:\DevSource\Tilko.Sample\Tilko.Sample\obj\Debug\Tilko.Sample.csproj.CopyComplete
+D:\DevSource\Tilko.Sample\Tilko.Sample\bin\Debug\Tilko.API.dll
+D:\DevSource\Tilko.Sample\Tilko.Sample\bin\Debug\Tilko.API.pdb
+D:\DevSource\Tilko.Sample\Tilko.Sample\bin\Debug\Newtonsoft.Json.xml

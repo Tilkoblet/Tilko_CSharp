@@ -31,9 +31,7 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.label3 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
-			this._txtRSA_PUBLIC_KEY = new System.Windows.Forms.TextBox();
 			this._txtAPI_KEY = new System.Windows.Forms.TextBox();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.label7 = new System.Windows.Forms.Label();
@@ -63,14 +61,12 @@
 			// groupBox1
 			// 
 			this.groupBox1.Controls.Add(this.label3);
-			this.groupBox1.Controls.Add(this.label2);
 			this.groupBox1.Controls.Add(this.label1);
-			this.groupBox1.Controls.Add(this._txtRSA_PUBLIC_KEY);
 			this.groupBox1.Controls.Add(this._txtAPI_KEY);
 			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.groupBox1.Location = new System.Drawing.Point(0, 0);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(733, 176);
+			this.groupBox1.Size = new System.Drawing.Size(733, 69);
 			this.groupBox1.TabIndex = 0;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "① API 키 입력";
@@ -79,21 +75,11 @@
 			// 
 			this.label3.AutoSize = true;
 			this.label3.ForeColor = System.Drawing.Color.Red;
-			this.label3.Location = new System.Drawing.Point(116, 152);
+			this.label3.Location = new System.Drawing.Point(116, 42);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(534, 13);
+			this.label3.Size = new System.Drawing.Size(437, 13);
 			this.label3.TabIndex = 4;
-			this.label3.Text = "홈페이지(http://tilko.net) > 내정보 > API KEY 목록에서 API 키와 서버용 공개키 값을 확인하고 입력해 주세요.";
-			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(12, 48);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(101, 26);
-			this.label2.TabIndex = 3;
-			this.label2.Text = "서버용 RSA 공개키\r\n(BASE64)";
-			this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
+			this.label3.Text = "홈페이지(http://tilko.net) > 내정보 > API KEY 목록에서 API 키를 확인하고 입력해 주세요.";
 			// 
 			// label1
 			// 
@@ -103,14 +89,6 @@
 			this.label1.Size = new System.Drawing.Size(38, 13);
 			this.label1.TabIndex = 2;
 			this.label1.Text = "API 키";
-			// 
-			// _txtRSA_PUBLIC_KEY
-			// 
-			this._txtRSA_PUBLIC_KEY.Location = new System.Drawing.Point(119, 45);
-			this._txtRSA_PUBLIC_KEY.Multiline = true;
-			this._txtRSA_PUBLIC_KEY.Name = "_txtRSA_PUBLIC_KEY";
-			this._txtRSA_PUBLIC_KEY.Size = new System.Drawing.Size(600, 104);
-			this._txtRSA_PUBLIC_KEY.TabIndex = 1;
 			// 
 			// _txtAPI_KEY
 			// 
@@ -130,7 +108,7 @@
 			this.groupBox2.Controls.Add(this._btnFind);
 			this.groupBox2.Controls.Add(this._txtCertPath);
 			this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
-			this.groupBox2.Location = new System.Drawing.Point(0, 176);
+			this.groupBox2.Location = new System.Drawing.Point(0, 69);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(733, 125);
 			this.groupBox2.TabIndex = 1;
@@ -218,7 +196,7 @@
 			this.groupBox3.Controls.Add(this.label8);
 			this.groupBox3.Controls.Add(this._cmbEndPoint);
 			this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
-			this.groupBox3.Location = new System.Drawing.Point(0, 301);
+			this.groupBox3.Location = new System.Drawing.Point(0, 194);
 			this.groupBox3.Name = "groupBox3";
 			this.groupBox3.Size = new System.Drawing.Size(733, 61);
 			this.groupBox3.TabIndex = 2;
@@ -270,7 +248,7 @@
 			// 
 			this.groupBox4.Controls.Add(this._txtResult);
 			this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
-			this.groupBox4.Location = new System.Drawing.Point(0, 362);
+			this.groupBox4.Location = new System.Drawing.Point(0, 255);
 			this.groupBox4.Name = "groupBox4";
 			this.groupBox4.Size = new System.Drawing.Size(733, 151);
 			this.groupBox4.TabIndex = 5;
@@ -292,19 +270,18 @@
 			this.groupBox5.Controls.Add(this._btnOK);
 			this.groupBox5.Controls.Add(this._btnCancel);
 			this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.groupBox5.Location = new System.Drawing.Point(0, 513);
+			this.groupBox5.Location = new System.Drawing.Point(0, 406);
 			this.groupBox5.Name = "groupBox5";
 			this.groupBox5.Size = new System.Drawing.Size(733, 52);
 			this.groupBox5.TabIndex = 6;
 			this.groupBox5.TabStop = false;
-			this.groupBox5.Text = "groupBox5";
 			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this._btnCancel;
-			this.ClientSize = new System.Drawing.Size(733, 565);
+			this.ClientSize = new System.Drawing.Size(733, 458);
 			this.Controls.Add(this.groupBox5);
 			this.Controls.Add(this.groupBox4);
 			this.Controls.Add(this.groupBox3);
@@ -333,9 +310,7 @@
 		#endregion
 
 		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.TextBox _txtRSA_PUBLIC_KEY;
 		private System.Windows.Forms.TextBox _txtAPI_KEY;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.GroupBox groupBox2;
