@@ -1,0 +1,10 @@
+D:\DevSource\Tilko.Sample\Tilko.Sample\bin\Debug\Tilko.Sample.exe.config
+D:\DevSource\Tilko.Sample\Tilko.Sample\bin\Debug\Tilko.Sample.exe
+D:\DevSource\Tilko.Sample\Tilko.Sample\bin\Debug\Tilko.Sample.pdb
+D:\DevSource\Tilko.Sample\Tilko.Sample\obj\Debug\Tilko.Sample.csprojAssemblyReference.cache
+D:\DevSource\Tilko.Sample\Tilko.Sample\obj\Debug\Tilko.Sample.Properties.Resources.resources
+D:\DevSource\Tilko.Sample\Tilko.Sample\obj\Debug\Tilko.Sample.csproj.GenerateResource.cache
+D:\DevSource\Tilko.Sample\Tilko.Sample\obj\Debug\Tilko.Sample.csproj.CoreCompileInputs.cache
+D:\DevSource\Tilko.Sample\Tilko.Sample\obj\Debug\Tilko.Sample.exe
+D:\DevSource\Tilko.Sample\Tilko.Sample\obj\Debug\Tilko.Sample.pdb
+D:\DevSource\Tilko.Sample\Tilko.Sample\obj\Debug\Tilko.Sample.frmMain.resources
