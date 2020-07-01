@@ -20,7 +20,7 @@ namespace Tilko.API
 		Random _rnd				= new Random();
 		AES _aes				= new AES();
 		string _pubUrl			= "http://beta.api.tilko.net/api/Auth/GetPublicKey?APIkey=";
-		string _authUrl			= "http://beta.api.tilko.net/api/v1.0/Nhis/Auth";
+		string _authUrl			= "http://beta.api.tilko.net/api/v1.0/Auth/Nhis";
 
 		#region Properties
 		/// <summary>
