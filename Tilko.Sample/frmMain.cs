@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Data;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
+using Tilko.API;
 
 namespace Tilko.Sample
 {
@@ -15,6 +17,7 @@ namespace Tilko.Sample
 	{
 		Tilko.API.Auth _auth	= new Tilko.API.Auth();
 		Tilko.API.Data _data	= new Tilko.API.Data();
+		AES _aes				= new AES();
 
 		#region frmMain : 생성자
 		/// <summary>
@@ -47,7 +50,7 @@ namespace Tilko.Sample
 			_dt.Columns.Add("TOTAL_CODE", typeof(string));
 			_dt.Columns.Add("CODE_NAME", typeof(string));
 			_dt.Rows.Add("http://beta.api.tilko.net/api/v1.0/Nhis/PaymentList", "건강보험공단(건강보험료납부내역)");
-			//_dt.Rows.Add("", "건강보험공단(약국 이용 이력)");
+			_dt.Rows.Add("http://beta.api.tilko.net/api/v1.0/Hira/MyDrugList", "내가 먹는 약");
 			//_dt.Rows.Add("", "건강보험공단(병원 내원 이력)");
 
 			_cmbEndPoint.ValueMember			= "TOTAL_CODE";
@@ -142,11 +145,33 @@ namespace Tilko.Sample
 
 				// 데이터 가져오기
 				_data.ApiKey				= _txtAPI_KEY.Text;
+				_data.EncKey				= _auth.EncKey;
 				_data.Body.Clear();
 				_data.Body.Add("AuthCode", _authRes.AuthCode);	// 건강보험공단 틸코 서버의 인증코드
-				_data.Body.Add("Year", "2019");					// 인증서 개인키
-				_data.Body.Add("StartMonth", "01");				// 주민등록번호
-				_data.Body.Add("EndMonth", "12");				// 인증서 암호
+				
+				// 건강보험공단(건강보험료납부내역)
+				//_data.Body.Add("Year", "2019");
+				//_data.Body.Add("StartMonth", "01");
+				//_data.Body.Add("EndMonth", "12");
+
+				#region 내가 먹는 약
+				// 암호화 처리
+				_aes.Key					= _auth.EncKey;
+				_aes.Iv						= new byte[16] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+				byte[] _certFile			= _aes.Encrypt(File.ReadAllBytes(_certFilePath));
+				byte[] _keyFile				= _aes.Encrypt(File.ReadAllBytes(_keyFilePath));
+				byte[] _certPassword		= _aes.Encrypt(Encoding.ASCII.GetBytes(_txtCertPassword.Text));
+				byte[] _identityNumber		= _aes.Encrypt(Encoding.ASCII.GetBytes(_txtIdentityNumber.Text));
+				byte[] _cellphoneNumber		= _aes.Encrypt(Encoding.ASCII.GetBytes("010-2965-4368"));
+
+				_data.Body.Add("CertFile", Convert.ToBase64String(_certFile));
+				_data.Body.Add("KeyFile", Convert.ToBase64String(_keyFile));
+				_data.Body.Add("CertPassword", Convert.ToBase64String(_certPassword));
+				_data.Body.Add("IdentityNumber", Convert.ToBase64String(_identityNumber));
+				_data.Body.Add("TelecomCompany", "0");
+				_data.Body.Add("CellphoneNumber", Convert.ToBase64String(_cellphoneNumber));
+				#endregion
+
 				var _dataRes				= _data.GetData(new Uri(_cmbEndPoint.SelectedValue.ToString()));
 
 				_txtResult.Text				= _dataRes;

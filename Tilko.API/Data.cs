@@ -44,6 +44,10 @@ namespace Tilko.API
 					 * 헤더 설정
 					 */
 					_httpClient.DefaultRequestHeaders.Add("API-Key", this.ApiKey);
+					if (this.EncKey != null)
+					{
+						_httpClient.DefaultRequestHeaders.Add("ENC-Key", Convert.ToBase64String(this.EncKey));
+					}
 
 					// 틸코 데이터 서버에 데이터 요청
 					string _dataUrl				= EndPoint.AbsoluteUri;

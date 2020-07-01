@@ -18,6 +18,7 @@ namespace Tilko.API
     public class Auth : Base
     {
 		Random _rnd				= new Random();
+		AES _aes				= new AES();
 		string _pubUrl			= "http://beta.api.tilko.net/api/Auth/GetPublicKey?APIkey=";
 		string _authUrl			= "http://beta.api.tilko.net/api/v1.0/Nhis/Auth";
 
@@ -100,16 +101,18 @@ namespace Tilko.API
 				byte[] _aesPlainKey				= new byte[16];
 				_rnd.NextBytes(_aesPlainKey);	// AES 키는 랜덤하게 생성해도 되고, 고정 값을 사용하셔도 됩니다.
 				// AES의 IV 값은 고정입니다.
-				byte[] _aesIv				= new byte[16] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+				byte[] _aesIv					= new byte[16] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
 
 				/*
 				 * AES 키를 이용하여 암호화합니다.
 				 */
-				byte[] _certCipherBytes			= this._AesEncrypt(_aesPlainKey, _aesIv, _certPlainBytes);
-				byte[] _keyCipherBytes			= this._AesEncrypt(_aesPlainKey, _aesIv, _keyPlainBytes);
-				byte[] _identityCipherBytes		= this._AesEncrypt(_aesPlainKey, _aesIv, _identityPlainBytes);
-				byte[] _passwordCipherBytes		= this._AesEncrypt(_aesPlainKey, _aesIv, _passwordPlainBytes);
+				_aes.Key						= _aesPlainKey;
+				_aes.Iv							= _aesIv;
+				byte[] _certCipherBytes			= _aes.Encrypt(_certPlainBytes);
+				byte[] _keyCipherBytes			= _aes.Encrypt(_keyPlainBytes);
+				byte[] _identityCipherBytes		= _aes.Encrypt(_identityPlainBytes);
+				byte[] _passwordCipherBytes		= _aes.Encrypt(_passwordPlainBytes);
 
 
 				/*
@@ -123,7 +126,7 @@ namespace Tilko.API
 					_rsa.ImportCspBlob(_rsaPublicKey);
 					_aesCipherKey		= _rsa.Encrypt(_aesPlainKey, false);	// PKCS #1.5 처리
 				}
-
+				this.EncKey						= _aesPlainKey;
 
 				AuthResponse _authResponse;
 
@@ -171,49 +174,6 @@ namespace Tilko.API
 			{
 				throw;
 			}
-		}
-		#endregion
-
-		// Private Methods
-		#region _AesEncrypt : AES로 암호화된 값 반환
-		/// <summary>
-		/// AES로 암호화된 값 반환
-		/// </summary>
-		/// <returns></returns>
-		public byte[] _AesEncrypt(byte[] Key, byte[] IV, byte[] PlainText)
-		{
-			byte[] _ret		= new byte[0];
-
-			try
-			{
-				using (RijndaelManaged _aes = new RijndaelManaged())
-				{
-					_aes.Key				= Key;
-					_aes.IV					= IV;
-					_aes.Mode				= CipherMode.CBC;
-					_aes.Padding			= PaddingMode.PKCS7;
-
-					using (ICryptoTransform _enc = _aes.CreateEncryptor(_aes.Key, _aes.IV))
-					{
-						using (MemoryStream _ms = new MemoryStream())
-						{
-							using (CryptoStream _cs = new CryptoStream(_ms, _enc, CryptoStreamMode.Write))
-							{
-								_cs.Write(PlainText, 0, PlainText.Length);
-								_cs.FlushFinalBlock();
-								_ret = _ms.ToArray();
-							}
-						}
-					}
-					_aes.Clear();
-				}
-			}
-			catch
-			{
-				throw;
-			}
-
-			return _ret;
 		}
 		#endregion
     }

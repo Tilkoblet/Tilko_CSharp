@@ -41,6 +41,7 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AES.cs" />
     <Compile Include="Auth.cs" />
     <Compile Include="Base.cs" />
     <Compile Include="Data.cs" />
