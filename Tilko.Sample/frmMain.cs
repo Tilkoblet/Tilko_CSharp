@@ -145,7 +145,8 @@ namespace Tilko.Sample
 
 				// 데이터 가져오기
 				_data.ApiKey				= _txtAPI_KEY.Text;
-				_data.EncKey				= _auth.EncKey;
+				_data.PlainEncKey			= _auth.PlainEncKey;
+				_data.CipherEncKey			= _auth.CipherEncKey;
 				_data.Body.Clear();
 				_data.Body.Add("AuthCode", _authRes.AuthCode);	// 건강보험공단 틸코 서버의 인증코드
 				
@@ -156,13 +157,13 @@ namespace Tilko.Sample
 
 				#region 내가 먹는 약
 				// 암호화 처리
-				_aes.Key					= _auth.EncKey;
+				_aes.Key					= _auth.PlainEncKey;
 				_aes.Iv						= new byte[16] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 				byte[] _certFile			= _aes.Encrypt(File.ReadAllBytes(_certFilePath));
 				byte[] _keyFile				= _aes.Encrypt(File.ReadAllBytes(_keyFilePath));
 				byte[] _certPassword		= _aes.Encrypt(Encoding.ASCII.GetBytes(_txtCertPassword.Text));
 				byte[] _identityNumber		= _aes.Encrypt(Encoding.ASCII.GetBytes(_txtIdentityNumber.Text));
-				byte[] _cellphoneNumber		= _aes.Encrypt(Encoding.ASCII.GetBytes("010-2965-4368"));
+				byte[] _cellphoneNumber		= _aes.Encrypt(Encoding.ASCII.GetBytes("01029654368"));
 
 				_data.Body.Add("CertFile", Convert.ToBase64String(_certFile));
 				_data.Body.Add("KeyFile", Convert.ToBase64String(_keyFile));

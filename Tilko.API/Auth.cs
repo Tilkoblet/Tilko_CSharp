@@ -126,7 +126,8 @@ namespace Tilko.API
 					_rsa.ImportCspBlob(_rsaPublicKey);
 					_aesCipherKey		= _rsa.Encrypt(_aesPlainKey, false);	// PKCS #1.5 처리
 				}
-				this.EncKey						= _aesPlainKey;
+				this.PlainEncKey				= _aesPlainKey;
+				this.CipherEncKey				= _aesCipherKey;
 
 				AuthResponse _authResponse;
 
