@@ -146,6 +146,7 @@
 			this._txtIdentityNumber.Location = new System.Drawing.Point(119, 59);
 			this._txtIdentityNumber.MaxLength = 13;
 			this._txtIdentityNumber.Name = "_txtIdentityNumber";
+			this._txtIdentityNumber.PasswordChar = '*';
 			this._txtIdentityNumber.Size = new System.Drawing.Size(228, 20);
 			this._txtIdentityNumber.TabIndex = 6;
 			// 
