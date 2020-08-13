@@ -49,8 +49,8 @@ namespace Tilko.Sample
 			var _dt								= new DataTable();
 			_dt.Columns.Add("TOTAL_CODE", typeof(string));
 			_dt.Columns.Add("CODE_NAME", typeof(string));
-			_dt.Rows.Add("https://api.tilko.net/api/v1.0/nhis/healthpaylist", "건강보험공단(건강보험료납부내역)");
-			_dt.Rows.Add("https://api.tilko.net/api/v1.0/hira/mydruglist", "내가 먹는 약");
+			_dt.Rows.Add("https://api.tilko.net/api/v1.0/nhis/jpaca00101/geongangboheom", "건강보험공단(건강보험료납부내역)");
+			_dt.Rows.Add("https://api.tilko.net/api/v1.0/hira/hiraa050300000100", "내가 먹는 약");
 			//_dt.Rows.Add("", "건강보험공단(병원 내원 이력)");
 
 			_cmbEndPoint.ValueMember			= "TOTAL_CODE";
@@ -134,24 +134,26 @@ namespace Tilko.Sample
 
 				string _certFilePath		= string.Format(@"{0}\signCert.der", _txtCertPath.Text);
 				string _keyFilePath			= string.Format(@"{0}\signPri.key", _txtCertPath.Text);
-				
-				if (_cmbEndPoint.SelectedValue.ToString() == "https://api.tilko.net/api/v1.0/nhis/healthpaylist")
+
+				// AES 키 생성 프로세스
+				_auth.ApiKey				= _txtAPI_KEY.Text;
+				_auth.SetAesKey();
+
+				// AES KEY, IV 세팅
+				_aes.Key					= _auth.PlainEncKey;
+				// IV 값은 고정입니다.
+				_aes.Iv						= new byte[16] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+
+				// 인증서 정보 암호화 처리
+				byte[] _certFile			= _aes.Encrypt(File.ReadAllBytes(_certFilePath));
+				byte[] _keyFile				= _aes.Encrypt(File.ReadAllBytes(_keyFilePath));
+				byte[] _certPassword		= _aes.Encrypt(Encoding.ASCII.GetBytes(_txtCertPassword.Text));
+				byte[] _identityNumber		= _aes.Encrypt(Encoding.ASCII.GetBytes(_txtIdentityNumber.Text));
+
+				_data.Body.Clear();
+				// API 별 파라미터 설정
+				if (_cmbEndPoint.SelectedValue.ToString() == "https://api.tilko.net/api/v1.0/nhis/jpaca00101/geongangboheom")
 				{
-					/*
-					 * 건강보험공단은 통합인증 대상으로 미리 공인인증서를 전달하여, 수신한 AuthCode 값을 함께 전송해야 합니다.
-					 */
-					// 인증 처리
-					_auth.ApiKey				= _txtAPI_KEY.Text;	// API 키 설정
-					_auth.CertFilePath			= _certFilePath;
-					_auth.KeyFilePath			= _keyFilePath;
-					_auth.IdentityNumber		= _txtIdentityNumber.Text;
-					_auth.CertPassword			= _txtCertPassword.Text;
-					var _authRes				= _auth.Authenticate("https://api.tilko.net/api/v1.0/auth/nhis");
-					
-					// 통합인증 대상 서버는 인증코드를 넣어줍니다.
-					_data.Body.Clear();
-					_data.Body.Add("AuthCode", _authRes.AuthCode);	// 건강보험공단 틸코 서버의 인증코드
-					
 					// 검색 파라미터
 					_data.Body.Add("Year", "2019");
 					_data.Body.Add("StartMonth", "01");
@@ -159,9 +161,10 @@ namespace Tilko.Sample
 				}
 				else
 				{
-					// 통합인증이 필요없는 일반 API의 경우에는 AES 키 생성 프로세스만 처리해 주면 됩니다.
-					_auth.ApiKey				= _txtAPI_KEY.Text;
-					_auth.SetAesKey();
+					// 암호화 처리
+					byte[] _cellphoneNumber		= _aes.Encrypt(Encoding.ASCII.GetBytes("01012345678"));
+					_data.Body.Add("CellphoneNumber", Convert.ToBase64String(_cellphoneNumber));
+					_data.Body.Add("TelecomCompany", "0");
 				}
 
 				// 데이터 가져오기
@@ -170,28 +173,13 @@ namespace Tilko.Sample
 				_data.CipherEncKey			= _auth.CipherEncKey;
 
 				#region 데이터 조회
-
-				_aes.Key					= _auth.PlainEncKey;
-				// IV 값은 고정입니다.
-				_aes.Iv						= new byte[16] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-				
-				// 암호화 처리
-				byte[] _certFile			= _aes.Encrypt(File.ReadAllBytes(_certFilePath));
-				byte[] _keyFile				= _aes.Encrypt(File.ReadAllBytes(_keyFilePath));
-				byte[] _certPassword		= _aes.Encrypt(Encoding.ASCII.GetBytes(_txtCertPassword.Text));
-				byte[] _identityNumber		= _aes.Encrypt(Encoding.ASCII.GetBytes(_txtIdentityNumber.Text));
-				byte[] _cellphoneNumber		= _aes.Encrypt(Encoding.ASCII.GetBytes("01012345678"));
-
 				_data.Body.Add("CertFile", Convert.ToBase64String(_certFile));
 				_data.Body.Add("KeyFile", Convert.ToBase64String(_keyFile));
 				_data.Body.Add("CertPassword", Convert.ToBase64String(_certPassword));
 				_data.Body.Add("IdentityNumber", Convert.ToBase64String(_identityNumber));
-				_data.Body.Add("TelecomCompany", "0");
-				_data.Body.Add("CellphoneNumber", Convert.ToBase64String(_cellphoneNumber));
 				#endregion
 
 				var _dataRes				= _data.GetData(new Uri(_cmbEndPoint.SelectedValue.ToString()));
-
 				_txtResult.Text				= _dataRes;
 			}
 			catch (Exception err)
