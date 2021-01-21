@@ -178,13 +178,10 @@ namespace Tilko.API
 				 */
 				byte[] _aesCipherKey			= new byte[0];
 				byte[] _rsaPublicKey			= Convert.FromBase64String(_pubKey.PublicKey);
-				using (var _x509 = new X509Certificate2(_rsaPublicKey))
-				{
-					using (var _rsa = _x509.GetRSAPublicKey())
-					{
-						_aesCipherKey = _rsa.Encrypt(_aesPlainKey, RSAEncryptionPadding.Pkcs1);
-					}
-				}
+                using (var _rsa = RSA.DecodePublicKey(_rsaPublicKey))
+                {
+					_aesCipherKey = _rsa.Encrypt(_aesPlainKey, RSAEncryptionPadding.Pkcs1);
+                }
 				this.PlainEncKey				= _aesPlainKey;
 				this.CipherEncKey				= _aesCipherKey;
 			}

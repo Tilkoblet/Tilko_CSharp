@@ -49,8 +49,8 @@ namespace Tilko.Sample
 			var _dt								= new DataTable();
 			_dt.Columns.Add("TOTAL_CODE", typeof(string));
 			_dt.Columns.Add("CODE_NAME", typeof(string));
-			_dt.Rows.Add("https://api.tilko.net/api/v1.0/nhis/healthpaylist", "건강보험공단(건강보험료납부내역)");
-			_dt.Rows.Add("https://api.tilko.net/api/v1.0/hira/mydruglist", "내가 먹는 약");
+			_dt.Rows.Add("https://api.tilko.net/api/v1.0/nhis/jpaca00101/geongangboheom", "건강보험공단(건강보험료납부내역)");
+			_dt.Rows.Add("https://api.tilko.net/api/v1.0/hira/hiraa050300000100", "내가 먹는 약");
 			//_dt.Rows.Add("", "건강보험공단(병원 내원 이력)");
 
 			_cmbEndPoint.ValueMember			= "TOTAL_CODE";
